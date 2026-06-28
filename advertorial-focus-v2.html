@@ -332,5 +332,19 @@ src="https://www.facebook.com/tr?id=1506835551179555&ev=PageView&noscript=1"
   </div>
 
 </main>
+ <script>
+(function() {
+  var params = new URLSearchParams(window.location.search);
+  var fbclid = params.get('fbclid');
+  if (!fbclid) return;
+  document.querySelectorAll('a[href*="mycosoul.com"]').forEach(function(a) {
+    try {
+      var url = new URL(a.href);
+      url.searchParams.set('fbclid', fbclid);
+      a.href = url.toString();
+    } catch(e) {}
+  });
+})();
+</script>
 </body>
 </html>
