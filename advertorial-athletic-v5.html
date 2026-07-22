@@ -809,20 +809,28 @@ src="https://www.facebook.com/tr?id=1506835551179555&ev=PageView&noscript=1"
   </div>
 
   <div class="article-footer">
-    <p><strong>⚠️ Important Disclaimer:</strong> This is a paid advertorial and should be considered marketing content. Claims about functional ingredients have not been evaluated by the MHRA. Products are not intended to diagnose, treat, cure, or prevent any disease. Results may vary. Please consult your GP before changing your diet or supplementation. Functional Coffee Review may earn a commission on purchases made through links in this article.</p>
+    <p><strong>⚠️ Important Disclaimer:</strong> Claims about functional ingredients have not been evaluated by the MHRA. Products are not intended to diagnose, treat, cure, or prevent any disease. Results may vary. Please consult your GP before changing your diet or supplementation. This is a paid advertorial and should be considered marketing content. Functional Coffee Review may earn a commission on purchases made through links in this article.</p>
     <p style="margin-top:8px;">© 2026 Functional Coffee Review. All rights reserved.</p>
   </div>
 
 </main>
  <script>
 (function() {
-  var params = new URLSearchParams(window.location.search);
-  var fbclid = params.get('fbclid');
-  if (!fbclid) return;
+  var incoming = new URLSearchParams(window.location.search);
+  // Params to forward from the FCR page URL onto every mycosoul.com link
+  var keys = ['fbclid','utm_source','utm_medium','utm_campaign','utm_content','utm_term'];
+  var toForward = [];
+  keys.forEach(function(k) {
+    var v = incoming.get(k);
+    if (v) toForward.push([k, v]);
+  });
+  if (!toForward.length) return;
   document.querySelectorAll('a[href*="mycosoul.com"]').forEach(function(a) {
     try {
       var url = new URL(a.href);
-      url.searchParams.set('fbclid', fbclid);
+      toForward.forEach(function(pair) {
+        url.searchParams.set(pair[0], pair[1]);
+      });
       a.href = url.toString();
     } catch(e) {}
   });
